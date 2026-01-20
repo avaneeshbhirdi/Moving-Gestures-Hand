@@ -1,12 +1,14 @@
 import React, { useState, useCallback } from 'react';
 import HandTracker from './components/HandTracker';
 import PhysicsCanvas from './components/PhysicsCanvas';
+import DrawingCanvas from './components/DrawingCanvas';
 import Controls from './components/Controls';
 import './index.css';
 
 function App() {
   const [isRunning, setIsRunning] = useState(false);
   const [resetKey, setResetKey] = useState(0);
+  const [mode, setMode] = useState('gravity'); // 'gravity' | 'drawing'
   const [handData, setHandData] = useState({
     detected: false,
     x: 0,
@@ -42,12 +44,20 @@ function App() {
         onToggleCamera={toggleCamera}
         onResetBalls={resetBalls}
         engineStatus={engineStatus}
+        mode={mode}
+        onSetMode={setMode}
       />
 
-      <PhysicsCanvas
-        handData={handData}
-        resetKey={resetKey}
-      />
+      {mode === 'gravity' ? (
+        <PhysicsCanvas
+          handData={handData}
+          resetKey={resetKey}
+        />
+      ) : (
+        <DrawingCanvas
+          handData={handData}
+        />
+      )}
 
       <HandTracker
         isRunning={isRunning}
