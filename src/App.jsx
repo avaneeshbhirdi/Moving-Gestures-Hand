@@ -52,6 +52,7 @@ function App() {
         <PhysicsCanvas
           handData={handData}
           resetKey={resetKey}
+          onSetMode={setMode}
         />
       ) : (
         <DrawingCanvas

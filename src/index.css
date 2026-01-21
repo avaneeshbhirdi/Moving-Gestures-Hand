@@ -5,8 +5,9 @@
 
   color-scheme: dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: #0f172a; /* Fallback */
-  
+  background-color: #0f172a;
+  /* Fallback */
+
   --primary-color: #646cff;
   --secondary-color: #535bf2;
   --accent-color: #ff0080;
@@ -19,7 +20,8 @@ body {
   min-width: 320px;
   min-height: 100vh;
   background: var(--bg-gradient);
-  overflow: hidden; /* Prevent scrollbars */
+  overflow: hidden;
+  /* Prevent scrollbars */
 }
 
 #root {
@@ -69,7 +71,8 @@ canvas {
   top: 20px;
   left: 20px;
   z-index: 10;
-  pointer-events: none; /* Let clicks pass through generally */
+  pointer-events: none;
+  /* Let clicks pass through generally */
 }
 
 .control-panel {
@@ -131,7 +134,8 @@ canvas {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transform: scaleX(-1); /* Mirror effect */
+  transform: scaleX(-1);
+  /* Mirror effect */
 }
 
 .instructions {
@@ -147,5 +151,6 @@ h1 {
   font-size: 1.5em;
   background: linear-gradient(to right, #fff, #94a3b8);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
 }
