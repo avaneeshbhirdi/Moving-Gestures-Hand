@@ -38,12 +38,48 @@ const DrawingCanvas = ({ handData }) => {
 
         ctx.clearRect(0, 0, width, height);
 
+        // Draw Grid
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
+        ctx.lineWidth = 1;
+        const gridSize = 50;
+
+        ctx.beginPath();
+        for (let x = 0; x <= width; x += gridSize) {
+            ctx.moveTo(x, 0);
+            ctx.lineTo(x, height);
+        }
+        for (let y = 0; y <= height; y += gridSize) {
+            ctx.moveTo(0, y);
+            ctx.lineTo(width, y);
+        }
+        ctx.stroke();
+
         // 1. Process Hand Input
         let handX = 0, handY = 0;
         if (handData.detected) {
             handX = handData.x * width;
             handY = handData.y * height;
         }
+
+        // Steady/Straight Line Logic (Axis Snapping)
+        let effectiveX = handX;
+        let effectiveY = handY;
+
+        if (handData.detected && handData.isSteady && currentShapeRef.current.length > 0) {
+            const lastPoint = currentShapeRef.current[currentShapeRef.current.length - 1];
+            const dx = Math.abs(handX - lastPoint.x);
+            const dy = Math.abs(handY - lastPoint.y);
+
+            if (dx > dy) {
+                effectiveY = lastPoint.y; // Snap to Horizontal
+            } else {
+                effectiveX = lastPoint.x; // Snap to Vertical
+            }
+        }
+
+        // Update handX/Y variables for drawing logic usage
+        // But we want to keep raw handX for cursor, and use effective for Shape
+        // So let's use effective coordinates for logic below
 
         // Detect Pinch "Click" (Rising Edge)
         const isPinching = handData.detected && handData.isPinching;
@@ -58,8 +94,8 @@ const DrawingCanvas = ({ handData }) => {
             // Check for snapping to start of current shape to close it
             if (currentShapeRef.current.length > 2) {
                 const startPoint = currentShapeRef.current[0];
-                const dx = handX - startPoint.x;
-                const dy = handY - startPoint.y;
+                const dx = effectiveX - startPoint.x;
+                const dy = effectiveY - startPoint.y;
                 if (Math.sqrt(dx * dx + dy * dy) < SNAP_DISTANCE) {
                     isSnapRadius = true;
                 }
@@ -72,7 +108,7 @@ const DrawingCanvas = ({ handData }) => {
                     currentShapeRef.current = [];
                 } else {
                     // Add point
-                    currentShapeRef.current.push({ x: handX, y: handY });
+                    currentShapeRef.current.push({ x: effectiveX, y: effectiveY });
                 }
             }
         }
@@ -132,8 +168,8 @@ const DrawingCanvas = ({ handData }) => {
                     ctx.strokeStyle = '#00ff88'; // Green for closing
                     ctx.lineWidth = 4;
                 } else {
-                    ctx.lineTo(handX, handY);
-                    ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)';
+                    ctx.lineTo(effectiveX, effectiveY);
+                    ctx.strokeStyle = handData.isSteady ? '#00ccff' : 'rgba(255, 255, 255, 0.5)';
                     ctx.lineWidth = 2;
                     ctx.setLineDash([5, 5]);
                 }
