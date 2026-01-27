@@ -154,3 +154,16 @@ h1 {
   background-clip: text;
   -webkit-text-fill-color: transparent;
 }
+
+.footer-credit {
+  position: absolute;
+  bottom: 10px;
+  width: 100%;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 0.8em;
+  pointer-events: none;
+  z-index: 20;
+  font-family: 'Outfit', sans-serif;
+  letter-spacing: 0.05em;
+}

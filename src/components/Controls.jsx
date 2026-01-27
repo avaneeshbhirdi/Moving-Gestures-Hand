@@ -32,7 +32,7 @@ const Controls = ({
             ) : (
                 <div className="control-panel">
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                        <h1>Antigravity</h1>
+                        <h1>Gesture AI</h1>
                         <button
                             onClick={() => setIsVisible(false)}
                             style={{

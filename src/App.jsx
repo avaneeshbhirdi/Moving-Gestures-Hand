@@ -64,6 +64,7 @@ function App() {
         isRunning={isRunning}
         onHandUpdate={handleHandUpdate}
       />
+      <div className="footer-credit">by team Artic Wolf</div>
     </div>
   );
 }
